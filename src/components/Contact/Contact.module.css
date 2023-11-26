@@ -1,0 +1,40 @@
+.contacts {
+display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 316px;
+    height: 30px;
+    gap: 5px;
+    margin-right: auto;
+    margin-right: auto;
+    margin-bottom: 10px; 
+}
+
+.contactsName {
+    width: 166px;
+        height: 30px;
+        font-size: 16px; 
+}
+
+.contactsNumber {
+    width: 110px;
+    font-size: 16px; 
+} 
+ 
+.contactsBtn {
+    display: inline-block;
+    align-items: center;
+    width: 100px; 
+    height: 30px;
+    border-radius: 6px;  
+    
+    background-color: rgba(37, 40, 48, 0.8); 
+    border: none; 
+    color: white;
+    cursor: pointer; 
+}
+
+.contactsBtn:hover {
+    background-color: rgb(63, 77, 105); 
+} 
+
