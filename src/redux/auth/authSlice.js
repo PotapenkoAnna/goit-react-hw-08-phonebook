@@ -7,7 +7,7 @@ const initialState = {
   token: null,
   error: null,
   isLoggedIn: false,
-  isRefreshing: false,
+  isRefreshing: true,    
   isLoading: false,
 };
 
@@ -38,14 +38,18 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
         state.isRefreshing = false;
       })
+      .addCase(refreshUser.rejected, (state, action) => {
+        state.user = action.payload;
+        state.isLoggedIn = true;
+        state.isRefreshing = false;
+      }) 
       .addMatcher(getActions('pending'), state => {
-        state.isLoading = false;
-        state.isRefreshing = true;
+        state.isLoading = false; 
+        
       })
 
       .addMatcher(getActions('rejected'), (state, action) => {
         state.isLoading = false;
-        state.isRefreshing = false;
         state.error = true;
       })
       .addMatcher(getActions('fulfilled'), state => {
