@@ -19,7 +19,7 @@ const schema = yup
   })
   .required();
 
-const RegisterForm = () => {
+const RegisterForm = () => { 
   const {
     register,
     handleSubmit,
@@ -42,7 +42,7 @@ const RegisterForm = () => {
 
   return (
     <Container>
-       {isLogedIn && <Navigate to="/contacts" replace />}
+      {isLogedIn && <Navigate to="/contacts" replace />}
       <FormStyle onSubmit={handleSubmit(onSubmit)}>
         <label>
           <span>Name</span>
@@ -78,9 +78,9 @@ const RegisterForm = () => {
           <span>{errors.password?.message}</span>
         </label>
         <button type="submit">Submit</button>
-      </FormStyle> 
-    </Container>  
-  );
+      </FormStyle>
+    </Container>
+  );  
 };
 
-export default RegisterForm; 
+export default RegisterForm;

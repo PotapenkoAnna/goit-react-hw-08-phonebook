@@ -2,21 +2,21 @@ import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { logOut, login, refreshUser, signUp } from './auth';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+
 const initialState = {
   user: { name: null, email: null },
   token: null,
   error: null,
   isLoggedIn: false,
-  isRefreshing: true,    
+  isRefreshing: false, // Change to false initially
   isLoading: false,
 };
-
-const getActions = type => isAnyOf(signUp[type], login[type], logOut[type]);
-
+ 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  extraReducers: builder => {
+  reducers: {}, // Add empty reducers if needed
+  extraReducers: (builder) => {
     builder
       .addCase(signUp.fulfilled, (state, action) => {
         state.user = action.payload.user;
@@ -38,32 +38,28 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
         state.isRefreshing = false;
       })
-      .addCase(refreshUser.rejected, (state, action) => {
-        state.user = action.payload;
-        state.isLoggedIn = true;
-        state.isRefreshing = false;
-      }) 
-      .addMatcher(getActions('pending'), state => {
-        state.isLoading = false; 
-        
+      .addMatcher(isAnyOf(signUp.pending, login.pending, logOut.pending, refreshUser.pending), (state) => {
+        state.isLoading = true;
+        state.isRefreshing = true;
       })
-
-      .addMatcher(getActions('rejected'), (state, action) => {
+      .addMatcher(isAnyOf(signUp.rejected, login.rejected, logOut.rejected, refreshUser.rejected), (state, action) => {
         state.isLoading = false;
-        state.error = true;
+        state.isRefreshing = false;
+        state.error = action.error; // Set the error message if available
       })
-      .addMatcher(getActions('fulfilled'), state => {
+      .addMatcher(isAnyOf(signUp.fulfilled, login.fulfilled, logOut.fulfilled, refreshUser.fulfilled), (state) => {
         state.isLoading = false;
         state.error = null;
       });
   },
 });
+
 const persistConfig = {
   key: 'auth',
   storage,
   whitelist: ['token'],
 };
-export const persistedReducer = persistReducer(
-  persistConfig,
-  authSlice.reducer
-);
+
+export const { reducer: authReducer, actions: authActions } = authSlice;
+
+export const persistedReducer = persistReducer(persistConfig, authReducer);

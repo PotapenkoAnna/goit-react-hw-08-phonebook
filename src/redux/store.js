@@ -6,7 +6,7 @@ import { contactsReducer } from './Contacts/contactsReducer';
 import {
   persistStore,
   FLUSH,
-  REHYDRATE, 
+  REHYDRATE,
   PAUSE,
   PERSIST,
   PURGE,
@@ -27,4 +27,4 @@ export const store = configureStore({
     }),
 });
 
-export const persistor = persistStore(store);
+export const persistor = persistStore(store); 
