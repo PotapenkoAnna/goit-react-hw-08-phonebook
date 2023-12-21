@@ -4,18 +4,18 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 const initialState = {
-  user: { name: null, email: null },
+  user: { name: null, email: null }, 
   token: null,
   error: null,
   isLoggedIn: false,
-  isRefreshing: false, // Change to false initially
+  isRefreshing: false, 
   isLoading: false,
 };
  
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {}, // Add empty reducers if needed
+  reducers: {}, 
   extraReducers: (builder) => {
     builder
       .addCase(signUp.fulfilled, (state, action) => {
@@ -45,7 +45,7 @@ const authSlice = createSlice({
       .addMatcher(isAnyOf(signUp.rejected, login.rejected, logOut.rejected, refreshUser.rejected), (state, action) => {
         state.isLoading = false;
         state.isRefreshing = false;
-        state.error = action.error; // Set the error message if available
+        state.error = action.error; 
       })
       .addMatcher(isAnyOf(signUp.fulfilled, login.fulfilled, logOut.fulfilled, refreshUser.fulfilled), (state) => {
         state.isLoading = false;
